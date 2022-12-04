@@ -13,7 +13,7 @@ jobs:
         with:
           userId: 1197694
           leaderboardId: 1197694-33bbc591
-          sessionCookie: ${{ AOC_SESSION }}
+          sessionCookie: ${{ secrets.AOC_SESSION }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update README stars
