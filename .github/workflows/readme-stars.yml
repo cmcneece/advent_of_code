@@ -12,7 +12,7 @@ jobs:
       - uses: k2bd/advent-readme-stars@v1
         with:
           userId: 1197694
-          leaderboardId: 1197694-33bbc591
+          leaderboardId: 1197694
           sessionCookie: ${{ secrets.AOC_SESSION }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
