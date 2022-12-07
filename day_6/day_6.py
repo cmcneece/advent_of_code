@@ -20,7 +20,7 @@ def get_marker_index(data: str, marker_type: str = 'message') -> int:
 if __name__ == "__main__":
     input_path = 'input.txt'
     with open(input_path, 'r') as f:
-        data = f.read().splitlines()[0]
+        data = f.read().strip()
 
     # execute part 1
     part_1 = get_marker_index(data, marker_type='packet')
