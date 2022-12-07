@@ -5,7 +5,7 @@ from day_6 import get_marker_index
 class TestSignalMethods(unittest.TestCase):
 
     def test_packet_algorithm(self):
-        ''' Returns True is the packet algorithm works on the sampel data'''
+        ''' Tests if the packet algorithm works on the sample data '''
         test_signals = ['bvwbjplbgvbhsrlpgdmjqwftvncz',
                         'nppdvjthqldpwncqszvftbrmjlhg',
                         'nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg',
@@ -17,7 +17,7 @@ class TestSignalMethods(unittest.TestCase):
         self.assertEqual(test_answers, index)
 
     def test_message_algorithm(self):
-        ''' Returns True is the packet algorithm works on the sampel data'''
+        ''' Tests if the message algorithm works on the sample data '''
         test_signals = ['mjqjpqmgbljsphdztnvjfqwrcgsmlb',
                         'bvwbjplbgvbhsrlpgdmjqwftvncz',
                         'nppdvjthqldpwncqszvftbrmjlhg',
