@@ -64,6 +64,10 @@ class Folder:
     def __iter__(self):
         return iter(self.contents)
 
+    def __str__(self) -> str:
+        msg = 'Folder(name={name},contents={contents}'
+        return msg.format(name=self.name, contents=self.contents.values())
+
 
 @dataclass
 class File:
