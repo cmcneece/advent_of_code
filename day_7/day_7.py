@@ -77,7 +77,7 @@ class File:
     _uid: list  # unique identified, the file_path
 
 
-def find_command_indicies(data) -> list:
+def find_command_indicies(data: list) -> list:
     """ get the indicies of all the commands in the input """
     i = 0
     command_indicies = []
@@ -89,7 +89,7 @@ def find_command_indicies(data) -> list:
     return command_indicies
 
 
-def create_file_system(data) -> Folder:
+def create_file_system(data: list) -> Folder:
     """ Builds the filesystem from the input data"""
     command_indicies = find_command_indicies(data)
 
