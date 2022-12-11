@@ -162,16 +162,15 @@ def get_folder_sizes(filesystem: Folder) -> dict[str, int]:
 def part_1(folder_sizes: dict[str, int]) -> None:
     ''' Executes part 1 calculation'''
     threshold = 100000
-    part_1_total = 0
+    part_1_answer = 0
     for size in folder_sizes.values():
         if size <= threshold:
-            part_1_total += size
+            part_1_answer += size
 
-    msg = "Sum of folder sizes that are smaller than 100,000: {answer}"
-    print(msg.format(answer=part_1_total))
+    return part_1_answer
 
 
-def part_2(folder_sizes: dict[str, int]) -> None:
+def part_2(file_system: Folder, folder_sizes: dict[str, int]) -> int:
     ''' Executes part 2 calculation'''
 
     space_needed = 30000000
@@ -186,8 +185,7 @@ def part_2(folder_sizes: dict[str, int]) -> None:
             big_enough.append(size)
     part_2_answer = min(big_enough)
 
-    msg = "The smallest folder that can be deleted has a size of {answer}"
-    print(msg.format(answer=part_2_answer))
+    return part_2_answer
 
 
 if __name__ == "__main__":
@@ -197,5 +195,13 @@ if __name__ == "__main__":
 
     file_system = create_file_system(data)
     folder_sizes = get_folder_sizes(file_system)
-    part_1(folder_sizes)
-    part_2(folder_sizes)
+
+    # part 1
+    part_1_answer = part_1(folder_sizes)
+    part_1_msg = "Sum of folder sizes that are smaller than 100,000: {answer}"
+    print(part_1_msg.format(answer=part_1_answer))
+
+    # part 2
+    part_2_answer = part_2(file_system, folder_sizes)
+    part_2_msg = "The smallest folder that can be deleted has a size of {answer}"
+    print(part_2_msg.format(answer=part_2_answer))
