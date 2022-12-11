@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Union
 
 
@@ -6,8 +6,8 @@ from typing import Union
 class Folder:
     """ Folder item."""
     name: str
-    _uid: list  # unique identified, the file_path
     contents: dict[str, Union['Folder', 'File']]  # itemname : Folder or File
+    uid: list[str] = field(default_factory=list)  # unique identified, the file_path
     _size: int = 0
 
     @property
@@ -15,54 +15,38 @@ class Folder:
         """ Returns the size of the folder"""
         # sum the size of all objects
         self._size = 0
-        for content in self.contents.items():
+        for content in self.contents.values():
             self._size += content.size
         return self._size
 
-    def has_file(self, content_name) -> bool:
+    def has_content(self, content_name: str, content_type: str = '') -> bool:
         """ Return True if the Folder has a specified File, else False """
         if content_name not in self.contents.keys():
             return False
-        if isinstance(self.contents[content_name]) != File:
-            return False
+        if content_type != '':
+            if isinstance(self.contents[content_name]) != content_type:
+                return False
         return True
 
-    def has_folder(self, content_name) -> bool:
-        """ Return True if the Folder has a specified Folder, else False """
-        if content_name not in self.contents.keys():
-            return False
-        if isinstance(self.contents[content_name]) != Folder:
-            return False
-        return True
-
-    def add(self, content) -> None:
-        """ Adds the give content to the Folder """
-        if self.has_file(content.name) or self.has_folder(content.name):
-            msg = 'Folder already has object {content_name}'
-            Exception(msg.format(content_name=content.name))
+    def add(self, content: Union['Folder', 'File']) -> None:
+        """ Adds the given content to the Folder """
+        content_type = type(content)
+        content.uid = self.uid + [content.name]
+        if self.has_content(content.name, content_type):
+            pass
         self.contents[content.name] = content
 
     def remove(self, content_name) -> None:
         """ Adds the specified content to the Folder """
-        if self.has_file(content_name) or self.has_folder(content_name):
-            msg = 'Folder does not have object {content_name}'
-            Exception(msg.format(content_name=content_name))
+        if self.has_content(content_name):
+            pass
         del self.contents[content_name]
-
-    def keys(self):
-        return self.contents.keys()
-
-    def items(self):
-        return self.contents.items()
-
-    def values(self):
-        return self.contents.values()
 
     def __getitem__(self, name):
         return self.contents[name]
 
     def __iter__(self):
-        return iter(self.contents)
+        return iter(self.contents.items())
 
     def __str__(self) -> str:
         msg = 'Folder(name={name},contents={contents}'
@@ -74,7 +58,7 @@ class File:
     """File item."""
     name: str
     size: int
-    _uid: list  # unique identified, the file_path
+    uid: list[str] = field(default_factory=list)  # unique identifier, the file_path
 
 
 def find_command_indicies(data: list) -> list:
@@ -94,57 +78,50 @@ def create_file_system(data: list) -> Folder:
     command_indicies = find_command_indicies(data)
 
     # start with a filesystem containing root directory
-    file_system = Folder(name='/', contents={}, _uid=['/'])
-    p_w_d = file_system._uid
+    file_system = Folder(name='/', contents={}, uid=['/'])
+    p_w_d = file_system.uid
     working_folder = file_system
 
     # construct the filesystem given the input
     for iter_index, command_index in enumerate(command_indicies):
-        line_elements = data[command_index].split(' ')
-        command = line_elements[1]
+        command_elements = data[command_index].split(' ')
+        command = command_elements[1]
 
         # if there is an ls command we look for any new files or folders
         if command == 'ls':
 
             # get the indicies of the command output
-            if iter_index == len(command_indicies)-1:
-                break
-            output_range = range(command_index, command_indicies[iter_index+1])[1:]
+            output_start = command_index + 1
+            try:
+                output_end = command_indicies[iter_index+1]
+            except:
+                output_end = len(data)
+            output_range = range(output_start, output_end)
 
             # iterate over the outputs of the command
             for output_index in output_range:
                 output_elements = data[output_index].split(' ')
-
                 lead_element = output_elements[0]
 
                 if lead_element == 'dir':
                     folder_name = output_elements[1]
-                    uid = p_w_d + [folder_name]
 
-                    # if we have already seen the folder move on
-                    if working_folder.has_folder(folder_name):
-                        continue
-
-                    # otherwise, create the folder
-                    working_folder.add(Folder(name=folder_name, contents={}, _uid=uid))
+                    # does nothing if the folder already exists
+                    working_folder.add(Folder(name=folder_name, contents={}))
 
                 else:  # must be a file
-                    file_name = output_elements[1]
-                    file_size = output_elements[0]
-                    uid = p_w_d + [folder_name]
+                    file_size, file_name = output_elements
 
-                    # if we have already seen the file move on
-                    if working_folder.has_file(file_name):
-                        continue
+                    # does nothing if the file already exists
+                    working_folder.add(File(name=file_name, size=int(file_size)))
 
-                    # otherwise, create the file
-                    working_folder.add(File(name=file_name, size=file_size, _uid=uid))
-
-        # if there is a cd command we have to move to a different part of the folder structure
+        # update the pwd based on cd command
         elif command == 'cd':
 
-            direction = line_elements[2]
+            # extract the input given to the cd command
+            direction = command_elements[2]
 
+            # go up the directory (..), down (any letter), or to root (/)
             if direction == '..':
                 p_w_d.pop()
             elif direction == '/':
@@ -152,11 +129,12 @@ def create_file_system(data: list) -> Folder:
             else:
                 p_w_d.append(direction)
 
+        # move to the new working directory
         if p_w_d == ['/']:
             # special case for going to the root directory
-            working_folder = file_system      
+            working_folder = file_system
         else:
-            # find our place 
+            # find our place
             working_folder = file_system
             for level in p_w_d[1:]:
                 working_folder = working_folder.contents[level]
@@ -164,11 +142,60 @@ def create_file_system(data: list) -> Folder:
     return file_system
 
 
+def folder_traverse(folder: Folder, folder_sizes: dict[str, Folder]) -> dict[str, Folder]:
+    """ Does the recursive traverse of a Folder """
+    for _, subfolder in folder:
+        if isinstance(subfolder, Folder):
+            folder_sizes['/'.join(subfolder.uid)] = subfolder.size
+            folder_sizes = folder_traverse(subfolder, folder_sizes)
+
+    return folder_sizes
+
+
+def get_folder_sizes(filesystem: Folder) -> dict[str, int]:
+    """ Return the size of folders """
+    folder_sizes = {}
+    folder_sizes = folder_traverse(folder=filesystem, folder_sizes=folder_sizes)
+    return folder_sizes
+
+
+def part_1(folder_sizes: dict[str, int]) -> None:
+    ''' Executes part 1 calculation'''
+    threshold = 100000
+    part_1_total = 0
+    for size in folder_sizes.values():
+        if size <= threshold:
+            part_1_total += size
+
+    msg = "Sum of folder sizes that are smaller than 100,000: {answer}"
+    print(msg.format(answer=part_1_total))
+
+
+def part_2(folder_sizes: dict[str, int]) -> None:
+    ''' Executes part 2 calculation'''
+
+    space_needed = 30000000
+    total_space_available = 70000000
+
+    total_used_space = file_system.size
+    unused_space = total_space_available - total_used_space
+
+    big_enough = []
+    for size in folder_sizes.values():
+        if (unused_space + size) >= space_needed:
+            big_enough.append(size)
+    part_2_answer = min(big_enough)
+
+    msg = "The smallest folder that can be deleted has a size of {answer}"
+    print(msg.format(answer=part_2_answer))
+
+
 if __name__ == "__main__":
-    input_path = 'test_input.txt'
+    input_path = 'input.txt'
     with open(input_path, 'r') as f:
         data = f.read().splitlines()
 
     file_system = create_file_system(data)
-
-    print(file_system)
+    folder_sizes = get_folder_sizes(file_system)
+    part_1(folder_sizes)
+    part_2(folder_sizes)
