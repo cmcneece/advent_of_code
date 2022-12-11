@@ -6,8 +6,9 @@ from typing import Union
 class Folder:
     """ Folder item."""
     name: str
-    contents: dict[str, Union['Folder', 'File']]  # itemname : Folder or File
-    uid: list[str] = field(default_factory=list)  # unique identified, the file_path
+    contents: dict[str, Union['Folder', 'File']] = field(default_factory=dict)
+    # the file path, making a list so its easy to hash into correct position
+    uid: list[str] = field(default_factory=list)
     _size: int = 0
 
     @property
@@ -105,13 +106,11 @@ def create_file_system(data: list) -> Folder:
 
                 if lead_element == 'dir':
                     folder_name = output_elements[1]
-
-                    # does nothing if the folder already exists
-                    working_folder.add(Folder(name=folder_name, contents={}))
+                    # does nothing if already exists
+                    working_folder.add(Folder(name=folder_name))
 
                 else:  # must be a file
                     file_size, file_name = output_elements
-
                     # does nothing if the file already exists
                     working_folder.add(File(name=file_name, size=int(file_size)))
 
