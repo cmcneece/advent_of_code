@@ -28,3 +28,5 @@ Check out [this sub-reddit](https://www.reddit.com/r/adventofcode/) for more sol
 - *Day 4*: feeling very grateful for part 2s that are easier than part 1s. Trying to improve my code documentation as well
 - *Day 5*: My partner hard coded the input and saved an hour of her life. I did not. Used deque for the first time. And had to implement some tests to make sure I wasn't going to miss out on any points
 - *Day 6*: Some relief thank goodness. Starting to implement type hinting
+- *Day 7*: Took a couple days to get to it. Did some OOP and got to practice some recurssion. Now I know that using a tree structure would have been much faster
+- *Day 8*: numpy arrays so much easier to index for this type of thing. Reminded me of algorithms I would write in grad school
