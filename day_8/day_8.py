@@ -45,13 +45,13 @@ def view_score(view_array: np.array, direction: str = None) -> int:
 
     if len(view_array) == 0:
         # at the boundary, no trees to see
-        score = 0
-    else:
-        # go until we dont see any trees or reach the boundary
-        while view_array[ind]:
-            ind += 1
-            if ind >= len(view_array):
-                break
+        return 0
+
+    # go until we dont see any trees or reach the boundary
+    while view_array[ind]:
+        ind += 1
+        if ind >= len(view_array):
+            break
 
     if ind != len(view_array):
         # count the view blocking tree
