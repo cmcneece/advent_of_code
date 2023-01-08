@@ -31,3 +31,4 @@ Check out [this sub-reddit](https://www.reddit.com/r/adventofcode/) for more sol
 - *Day 6*: Some relief thank goodness. Starting to implement type hinting
 - *Day 7*: Took a couple days to get to it. Did some OOP and got to practice some recurssion. Now I know that using a tree structure would have been much faster
 - *Day 8*: numpy arrays so much easier to index for this type of thing. Reminded me of algorithms I would write in grad school
+- *Day 9*: back on the wagon after many days away!
