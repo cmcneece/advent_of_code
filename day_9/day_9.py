@@ -46,7 +46,7 @@ def update_position(t_pos: np.array, h_pos: np.array) -> np.array:
     return t_pos
 
 
-def num_unique_positions(positions: list) -> int:
+def num_unique_positions(positions: list[np.array]) -> int:
     ''' Accepts the list of knot positions, returns the number of
     unique positions the knot has occupied'''
     uniques = set([tuple(sum(position.tolist(), []))
@@ -55,7 +55,7 @@ def num_unique_positions(positions: list) -> int:
     return len(uniques)
 
 
-def part_1(instructions: list, rope: list) -> int:
+def part_1(instructions: list[Instruction], rope: list[np.array]) -> int:
     ''' Accepts the instruction list and rope, returns the answer to part 1'''
 
     h_position = rope[0]
@@ -76,7 +76,7 @@ def part_1(instructions: list, rope: list) -> int:
     return num_unique_positions(t_positions)
 
 
-def part_2(instructions: list, rope: list) -> int:
+def part_2(instructions: list[Instruction], rope: list[np.array]) -> int:
     ''' Accepts the instruction list and rope, returns the answer to part 2'''
 
     h_positions = [rope[0]]

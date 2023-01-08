@@ -1,8 +1,8 @@
-from .day_9 import part_1, part_2, extract_instructions
+from .day_9 import part_1, part_2, extract_instructions, Instruction
 import numpy as np
 
 
-def setup_tests(part: int) -> tuple:
+def setup_tests(part: int) -> tuple[list[Instruction], list[np.array]]:
     ''' Accept the part of the challenges to test,
     returns the instructions and rope'''
     print(part)
