@@ -1,12 +1,39 @@
-from .day_10 import part_1
+from .day_10 import get_signal_strength, part_2, execute_instructions
+import numpy as np
+
+INPUT_PATH = 'test_input.txt'
+
+
+def set_up():
+    with open(INPUT_PATH, 'r') as f:
+        instructions = [line.strip().split() for line in f.readlines()]
+    register_values = execute_instructions(instructions)
+
+    return register_values
 
 
 def test_part_1():
     part_1_true_answer = 13140
-    INPUT_PATH = 'part_1_test_input.txt'
+    register_values = set_up()
+    part_1_answer = get_signal_strength(register_values)
 
-    with open(INPUT_PATH, 'r') as f:
-        instructions = [line.strip().split() for line in f.readlines()]
-
-    part_1_answer = part_1(instructions)
     assert part_1_true_answer == part_1_answer
+
+
+def test_part_2():
+    answer_text = "##..##..##..##..##..##..##..##..##..##..\
+    ###...###...###...###...###...###...###.\
+    ####....####....####....####....####....\
+    #####.....#####.....#####.....#####.....\
+    ######......######......######......####\
+    #######.......#######.......#######....."
+    print(len(answer_text))
+
+    answer_screen = np.ndarray(shape=(6, 40), dtype=object)
+    for i, val in enumerate(answer_text):
+        x, y = np.unravel_index(i, shape=answer_screen.shape)
+        answer_screen[x, y] = val
+
+    register_values = set_up()
+    screen = part_2(register_values)
+    assert answer_screen == screen
