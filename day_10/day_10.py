@@ -8,24 +8,30 @@ Register = namedtuple("Register", ["register", "signal_strength"])
 
 
 def pretty_print(input_array: np.ndarray) -> None:
+    ''' Prints the screen in a pretty way'''
     A = pd.DataFrame(input_array)
     A.columns = ['']*A.shape[1]
     print(A.to_string(index=False))
 
 
-def execute_instructions(instructions):
+def execute_instructions(instructions: list[str]) -> dict[int, Register]:
+    ''' Takes the instruction input and returns the cycle, register, 
+    and signal strength'''
     cycle = 1
     register = 1
-    register_values = {cycle: Register(register=register, signal_strength=cycle*register)}
+    register_values = {cycle: Register(register=register,
+                                       signal_strength=cycle*register)}
 
     for instruction in instructions:
         command = instruction[0]
 
         if command == 'noop':
+            # noop does nothing and takes 1 cycle to execute
             cycle += 1
             register_values[cycle] = Register(register=register,
                                               signal_strength=cycle*register)
         elif command == 'addx':
+            # addx adds to the register and takes two cycles to execute
             cycle += 1
             register_values[cycle] = Register(register=register,
                                               signal_strength=cycle*register)
@@ -38,7 +44,8 @@ def execute_instructions(instructions):
     return register_values
 
 
-def get_signal_strength(register_values):
+def get_signal_strength(register_values: dict[int, Register]) -> int:
+    ''' Calculates the sum of signal strength for the cycles of interest'''
     signal_strength_sum = 0
     for cycle in INTERESTING_CYCLES:
         signal_strength_sum += register_values[cycle].signal_strength
@@ -46,7 +53,10 @@ def get_signal_strength(register_values):
     return signal_strength_sum
 
 
-def part_2(register_values, to_print: bool):
+def part_2(register_values: dict[int, Register], to_print: bool) -> np.ndarray:
+    ''' Takes the register values and returns the screen output'''
+    if to_print is None:
+        to_print = False
     screen = np.ndarray(shape=(6, 40), dtype=object)
     num_el = screen.shape[0]*screen.shape[1]
     for i in range(num_el):
@@ -60,7 +70,7 @@ def part_2(register_values, to_print: bool):
             screen[x, y] = '.'
     if to_print:
         pretty_print(screen)
-    
+
     return screen
 
 

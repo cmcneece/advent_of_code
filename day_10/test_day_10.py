@@ -5,6 +5,7 @@ INPUT_PATH = 'test_input.txt'
 
 
 def set_up():
+    ''' Loads the input and returns the register values'''
     with open(INPUT_PATH, 'r') as f:
         instructions = [line.strip().split() for line in f.readlines()]
     register_values = execute_instructions(instructions)
@@ -13,6 +14,7 @@ def set_up():
 
 
 def test_part_1():
+    ''' Tests part 1 of the puzzle'''
     part_1_true_answer = 13140
     register_values = set_up()
     part_1_answer = get_signal_strength(register_values)
@@ -21,12 +23,13 @@ def test_part_1():
 
 
 def test_part_2():
+    ''' Tests part 2 of the puzzle'''
     answer_text = "##..##..##..##..##..##..##..##..##..##..\
-    ###...###...###...###...###...###...###.\
-    ####....####....####....####....####....\
-    #####.....#####.....#####.....#####.....\
-    ######......######......######......####\
-    #######.......#######.......#######....."
+###...###...###...###...###...###...###.\
+####....####....####....####....####....\
+#####.....#####.....#####.....#####.....\
+######......######......######......####\
+#######.......#######.......#######....."
     print(len(answer_text))
 
     answer_screen = np.ndarray(shape=(6, 40), dtype=object)
@@ -35,5 +38,6 @@ def test_part_2():
         answer_screen[x, y] = val
 
     register_values = set_up()
-    screen = part_2(register_values)
-    assert answer_screen == screen
+    screen = part_2(register_values, to_print=False)
+    comparison = answer_screen == screen
+    assert comparison.all()
