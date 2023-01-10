@@ -25,17 +25,13 @@ def execute_instructions(instructions: list[str]) -> dict[int, Register]:
     for instruction in instructions:
         command = instruction[0]
 
-        if command == 'noop':
-            # noop does nothing and takes 1 cycle to execute
-            cycle += 1
-            register_values[cycle] = Register(register=register,
-                                              signal_strength=cycle*register)
-        elif command == 'addx':
-            # addx adds to the register and takes two cycles to execute
-            cycle += 1
-            register_values[cycle] = Register(register=register,
-                                              signal_strength=cycle*register)
+        # both noop and addx take at least one cycle where nothing is done
+        cycle += 1
+        register_values[cycle] = Register(register=register,
+                                          signal_strength=cycle*register)
 
+        if command == 'addx':
+            # addx adds to the register and takes two cycles to execute
             cycle += 1
             register += int(instruction[1])
             register_values[cycle] = Register(register=register,
@@ -83,6 +79,7 @@ if __name__ == "__main__":
     register_values = execute_instructions(instructions)
     part_1_answer = get_signal_strength(register_values)
     MSG = 'The sum of signal strengths for cycles {interesting_cycle} is {signal_sum}'
-    print(MSG.format(interesting_cycle=INTERESTING_CYCLES, signal_sum=part_1_answer))
+    print(MSG.format(interesting_cycle=INTERESTING_CYCLES,
+                     signal_sum=part_1_answer))
 
     part_2(register_values, to_print=True)
