@@ -18,7 +18,7 @@ class Monkey:
         '''Evaluates if an item passes the test'''
         return (item % self.test_factor) == 0
 
-    def inspect(self, monkeys: dict[int, Monkey], part: int, supermodulo: int) -> dict[int, Monkey]:
+    def inspect(self, monkeys: list['Monkey'], part: int, supermodulo: int) -> list['Monkey']:
         '''Inspect items and toss them to othe monkeys'''
         for item in self.items:
             old = item
@@ -39,7 +39,7 @@ class Monkey:
         return monkeys
 
 
-def parse_input(input_path: str) -> tuple[dict[int, Monkey], int]:
+def parse_input(input_path: str) -> tuple[list[Monkey], int]:
     ''' Parses the input text, returns the monkeys and supermodulo'''
     with open(input_path, 'r') as f:
         data = f.readlines()
@@ -51,7 +51,7 @@ def parse_input(input_path: str) -> tuple[dict[int, Monkey], int]:
     for start, stop in zip(block_start, block_stop):
         blocks.append(data[start:stop])
 
-    monkeys = {}
+    monkeys = []
     supermodulo = 1
     for block in blocks:
         for j, _ in enumerate(block):
@@ -80,23 +80,24 @@ def parse_input(input_path: str) -> tuple[dict[int, Monkey], int]:
             elif j == 5:
                 false_monkey = int(line.replace("If false: throw to monkey ", ""))
 
-        monkey = Monkey(id=id, items=items, operation=operation, test_factor=test_factor,
-                        true_monkey=true_monkey, false_monkey=false_monkey)
+        monkey = Monkey(id=id, items=items, operation=operation,
+                        test_factor=test_factor, true_monkey=true_monkey,
+                        false_monkey=false_monkey)
 
-        monkeys[id] = monkey
+        monkeys.append(monkey)
 
     return monkeys, supermodulo
 
 
-def execute_rounds(monkeys: dict[int, Monkey], rounds: int, part: int, supermodulo: int):
+def execute_rounds(monkeys: list[Monkey], rounds: int, part: int, supermodulo: int):
     ''' Executes rounds of monkey inspection and tossing'''
     for _ in range(rounds):
-        for id in range(len(monkeys)):
-            monkeys = monkeys[id].inspect(monkeys=monkeys, part=part,
-                                          supermodulo=supermodulo)
+        for monkey in monkeys:
+            monkeys = monkey.inspect(monkeys=monkeys, part=part,
+                                     supermodulo=supermodulo)
 
     items_inspected = []
-    for _, monkey in monkeys.items():
+    for monkey in monkeys:
         items_inspected.append(monkey.items_inspected)
 
     items_inspected.sort()
