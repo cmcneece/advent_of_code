@@ -61,17 +61,17 @@ def parse_input(input_path: str) -> tuple[list[Monkey], int]:
 
             if j == 0:
                 # monkey id
-                line = line.strip(":")
-                id = int(line.split()[1])
+                line = line.strip(":").replace("Monkey ", "")
+                id = int(line[0])
             elif j == 1:
                 # current items
-                items_text = line.split(":")[1].split(",")
+                line = line.replace("Starting items: ", "").replace(" ", "").split(",")
                 items = []
-                for entry in items_text:
-                    items.append(int(entry.strip()))
+                for item in line:
+                    items.append(int(item))
             elif j == 2:
                 # operation
-                operation = line.split(":")[1].strip(",").replace(" ", "").replace("new=", "")
+                operation = line.replace("Operation: new = ", "").replace(" ", "")
             elif j == 3:
                 test_factor = int(line.replace("Test: divisible by", ""))
                 supermodulo *= test_factor
@@ -89,7 +89,8 @@ def parse_input(input_path: str) -> tuple[list[Monkey], int]:
     return monkeys, supermodulo
 
 
-def execute_rounds(monkeys: list[Monkey], rounds: int, part: int, supermodulo: int):
+def execute_rounds(monkeys: list[Monkey], rounds: int, part: int,
+                   supermodulo: int):
     ''' Executes rounds of monkey inspection and tossing'''
     for _ in range(rounds):
         for monkey in monkeys:
@@ -114,10 +115,10 @@ if __name__ == "__main__":
     part_1_monkeys = copy.deepcopy(monkeys)
     part_2_monkeys = copy.deepcopy(monkeys)
 
-    part_1_solution = execute_rounds(monkeys=part_1_monkeys, rounds=20, part=1,
-                                     supermodulo=supermodulo)
+    part_1_solution = execute_rounds(monkeys=part_1_monkeys, rounds=20,
+                                     part=1, supermodulo=supermodulo)
     print(MSG.format(part=1, solution=part_1_solution))
 
-    part_2_solution = execute_rounds(monkeys=part_2_monkeys, rounds=10000, part=2,
-                                     supermodulo=supermodulo)
+    part_2_solution = execute_rounds(monkeys=part_2_monkeys, rounds=10000,
+                                     part=2, supermodulo=supermodulo)
     print(MSG.format(part=2, solution=part_2_solution))
