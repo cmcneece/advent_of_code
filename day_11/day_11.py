@@ -14,21 +14,23 @@ class Monkey:
     false_monkey: int
     items_inspected: int = 0
 
-    def test_function(self, item):
+    def test_function(self, item: int) -> bool:
+        '''Evaluates if an item passes the test'''
         return (item % self.test_factor) == 0
 
-    def inspect(self, monkeys, part, supermodulo):
+    def inspect(self, monkeys: dict[int, Monkey], part: int, supermodulo: int) -> dict[int, Monkey]:
+        '''Inspect items and toss them to othe monkeys'''
         for item in self.items:
             old = item
-            # old evaluated in here
+            # adjust anxiety levels
             new = eval(self.operation)
             if part == 1:
                 new = floor(new / 3)
             elif part == 2:
                 new %= supermodulo
-                # print(MONKEY_DIVISOR_CONSTANT)
 
-            destination_monkey = self.true_monkey if self.test_function(new) else self.false_monkey
+            destination_monkey = self.true_monkey \
+                if self.test_function(new) else self.false_monkey
             monkeys[destination_monkey].items.append(new)
             self.items_inspected += 1
 
@@ -37,8 +39,8 @@ class Monkey:
         return monkeys
 
 
-def parse_input(input_path):
-
+def parse_input(input_path: str) -> tuple[dict[int, Monkey], int]:
+    ''' Parses the input text, returns the monkeys and supermodulo'''
     with open(input_path, 'r') as f:
         data = f.readlines()
 
@@ -86,7 +88,8 @@ def parse_input(input_path):
     return monkeys, supermodulo
 
 
-def execute_rounds(monkeys, rounds, part, supermodulo):
+def execute_rounds(monkeys: dict[int, Monkey], rounds: int, part: int, supermodulo: int):
+    ''' Executes rounds of monkey inspection and tossing'''
     for _ in range(rounds):
         for id in range(len(monkeys)):
             monkeys = monkeys[id].inspect(monkeys=monkeys, part=part,
