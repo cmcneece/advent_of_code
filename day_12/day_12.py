@@ -226,7 +226,7 @@ class Map:
         pretty_print(path_array)
 
 
-def get_all_indicies(symbol: str) -> list[tuple[int, int]]:
+def get_all_indicies(my_map: Map, symbol: str) -> list[tuple[int, int]]:
 
     locations = np.where(my_map.txt_map == symbol)
     indicies = []
@@ -236,20 +236,17 @@ def get_all_indicies(symbol: str) -> list[tuple[int, int]]:
     return indicies
 
 
-if __name__ == "__main__":
-    input_path = "input.txt"
-
-    # part 1
-    my_map = Map(graph_type='directed')
-    my_map.build_map_from_input(input_path)
+def part_1(my_map: Map) -> int:
+    '''Solve part 1'''
     shortest_path = my_map.graph.shortest_path(my_map.stop, my_map.start)
     shortest_path_length = len(shortest_path)-1
-    print(f'The shortest path takes {shortest_path_length} steps')
-    my_map.print_path(shortest_path)
+    return shortest_path_length
 
-    # part 2
+
+def part_2(my_map: Map) -> int:
+    '''Solve part 2'''
     paths = {}
-    starts = get_all_indicies("a")
+    starts = get_all_indicies(my_map, "a")
     for start_ind in starts:
         start_node = my_map.get_node(start_ind)
         path = my_map.graph.shortest_path(start_node, my_map.stop)
@@ -263,5 +260,18 @@ if __name__ == "__main__":
             shortest_dist = val[1]
             shortest_path_node_id = key
 
-    shortest = paths[shortest_path_node_id][1]
-    print(f'The shortest path from any elevation "a" is {shortest} from node {shortest_path_node_id}')
+    return paths[shortest_path_node_id][1]
+
+
+if __name__ == "__main__":
+    input_path = "input.txt"
+    my_map = Map(graph_type='directed')
+    my_map.build_map_from_input(input_path)
+
+    # part 1
+    part_1_solution = part_1(my_map)
+    print(f'The shortest path takes {part_1_solution} steps')
+
+    # part 2
+    part_2_solution = part_2(my_map)
+    print(f'The shortest path from any elevation "a" is {part_2_solution}.')
