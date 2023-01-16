@@ -6,7 +6,6 @@ from dataclasses import dataclass, field
 import pandas as pd
 from functools import cached_property
 import heapq
-import matplotlib.pyplot as plt
 
 
 ELEVATION_MAPPING = {letter: elevation for letter, elevation
@@ -41,7 +40,6 @@ class Graph:
 
         # if the graph is not directed then it can go both ways
         if self.graph_type != 'directed':
-            print('test')
             if destination not in self.graph:
                 self.graph[destination] = set()
             self.graph[destination].add(source)
@@ -100,6 +98,7 @@ class Graph:
 class Map:
     '''A class to represent the topography'''
     txt_map: np.ndarray[str] = np.ndarray(shape=(0, 0))
+    graph_type: str = 'directed'
 
     @property
     def shape(self) -> tuple[int, int]:
@@ -164,7 +163,7 @@ class Map:
     @cached_property
     def graph(self) -> Graph:
         '''Creates the graph representation from the map'''
-        graph = Graph()
+        graph = Graph(graph_type=self.graph_type)
 
         for row_ind, row in enumerate(self.elevation_map):
             for col_ind, current_elevation in enumerate(row):
@@ -206,6 +205,10 @@ class Map:
         ind = np.where(self.node_map == node_id)
         return (ind[0][0], ind[1][0])
 
+    def get_node(self, index: tuple[int, int]) -> int:
+        '''Return the node of a map index'''
+        return self.node_map[index]
+
     def print_path(self, path: list[int]):
         '''Print the map with the provided path shown'''
         path_array = deepcopy(self.txt_map)
@@ -223,13 +226,42 @@ class Map:
         pretty_print(path_array)
 
 
+def get_all_indicies(symbol: str) -> list[tuple[int, int]]:
+
+    locations = np.where(my_map.txt_map == symbol)
+    indicies = []
+    for i in range(len(locations[0])):
+        index = (locations[0][i], locations[1][i])
+        indicies.append(index)
+    return indicies
+
+
 if __name__ == "__main__":
     input_path = "input.txt"
 
     # part 1
-    my_map = Map()
+    my_map = Map(graph_type='directed')
     my_map.build_map_from_input(input_path)
-    shortest_path = my_map.graph.shortest_path(my_map.start, my_map.stop)
+    shortest_path = my_map.graph.shortest_path(my_map.stop, my_map.start)
     shortest_path_length = len(shortest_path)-1
     print(f'The shortest path takes {shortest_path_length} steps')
     my_map.print_path(shortest_path)
+
+    # part 2
+    paths = {}
+    starts = get_all_indicies("a")
+    for start_ind in starts:
+        start_node = my_map.get_node(start_ind)
+        path = my_map.graph.shortest_path(start_node, my_map.stop)
+        if not path:
+            continue
+        paths[start_node] = (path, len(path)-1)
+
+    shortest_dist = float('infinity')
+    for key, val in paths.items():
+        if val[1] < shortest_dist:
+            shortest_dist = val[1]
+            shortest_path_node_id = key
+
+    shortest = paths[shortest_path_node_id][1]
+    print(f'The shortest path from any elevation "a" is {shortest} from node {shortest_path_node_id}')
