@@ -1,3 +1,10 @@
+import pathlib
+import os
+
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
+
+
 def get_marker_index(data: str, marker_type: str = 'message') -> int:
     ''' Takes the signal data and the type of marker we are looking for,
     returns the index for where the maker type starts '''
@@ -18,8 +25,9 @@ def get_marker_index(data: str, marker_type: str = 'message') -> int:
 
 
 if __name__ == "__main__":
-    input_path = 'input.txt'
-    with open(input_path, 'r') as f:
+    INPUT_FILE = 'input.txt'
+    INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
+    with open(INPUT_PATH, 'r') as f:
         data = f.read().strip()
 
     # execute part 1

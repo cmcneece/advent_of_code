@@ -1,23 +1,29 @@
 from .day_9 import part_1, part_2, extract_instructions, Instruction
 import numpy as np
+import pathlib
+import os
+
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 
 def setup_tests(part: int) -> tuple[list[Instruction], list[np.array]]:
     ''' Accept the part of the challenges to test,
     returns the instructions and rope'''
-    print(part)
     if part == 1:
-        input_path = 'part_1_test_input.txt'
+        INPUT_FILE = 'part_1_test_input.txt'
+        INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
         rope_length = 2
     elif part == 2:
-        input_path = 'part_2_test_input.txt'
+        INPUT_FILE = 'part_2_test_input.txt'
+        INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
         rope_length = 10
     else:
         print('no')
         raise ValueError("Unknown part to test")
 
     rope = [np.array([[0], [0]]) for _ in range(rope_length)]
-    with open(input_path, 'r') as f:
+    with open(INPUT_PATH, 'r') as f:
         data = f.read().splitlines()
 
     instructions = extract_instructions(data)

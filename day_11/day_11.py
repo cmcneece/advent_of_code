@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 from math import floor, prod
 import copy
+import pathlib
+import os
 
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 @dataclass
 class Monkey:
@@ -108,7 +111,8 @@ def execute_rounds(monkeys: list[Monkey], rounds: int, part: int,
 
 
 if __name__ == "__main__":
-    INPUT_PATH = 'input.txt'
+    INPUT_FILE = 'input.txt'
+    INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
     MSG = "Part {part} solution is {solution}"
 
     monkeys, supermodulo = parse_input(INPUT_PATH)

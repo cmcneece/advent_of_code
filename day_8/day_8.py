@@ -1,4 +1,9 @@
 import numpy as np
+import pathlib
+import os
+
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 
 def get_forest_data(input_path: str) -> np.array:
@@ -94,8 +99,9 @@ def part_2(forest_data: np.array) -> int:
 
 
 if __name__ == "__main__":
-    input_path = 'input.txt'
-    forest_data = get_forest_data(input_path)
+    INPUT_FILE = 'input.txt'
+    INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
+    forest_data = get_forest_data(INPUT_PATH)
 
     part_1_answer = part_1(forest_data)
     part_1_msg = '{answer} trees are visible from outside the grid.'

@@ -1,5 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Union
+import pathlib
+import os
+
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 
 @dataclass
@@ -188,8 +193,9 @@ def part_2(file_system: Folder, folder_sizes: dict[str, int]) -> int:
 
 
 if __name__ == "__main__":
-    input_path = 'input.txt'
-    with open(input_path, 'r') as f:
+    INPUT_FILE = 'input.txt'
+    INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
+    with open(INPUT_PATH, 'r') as f:
         data = f.read().splitlines()
 
     file_system = create_file_system(data)

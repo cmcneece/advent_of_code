@@ -1,5 +1,11 @@
 from collections import namedtuple
 import numpy as np
+import pathlib
+import os
+
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
+
 
 # translation of input direction into a movement vector
 DIRECTION_MAPPING = {'R': np.array([[1], [0]]),
@@ -100,8 +106,8 @@ def part_2(instructions: list[Instruction], rope: list[np.array]) -> int:
 
 
 if __name__ == "__main__":
-
-    INPUT_PATH = 'input.txt'
+    INPUT_FILE = 'input.txt'
+    INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
 
     with open(INPUT_PATH, 'r') as f:
         data = f.read().splitlines()
