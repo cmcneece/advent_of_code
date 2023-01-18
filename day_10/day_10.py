@@ -1,6 +1,11 @@
 from collections import namedtuple
 import pandas as pd
 import numpy as np
+import pathlib
+import os
+
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 INTERESTING_CYCLES = [20, 60, 100, 140, 180, 220]
 
@@ -71,7 +76,8 @@ def part_2(register_values: dict[int, Register], to_print: bool) -> np.ndarray:
 
 
 if __name__ == "__main__":
-    INPUT_PATH = 'input.txt'
+    INPUT_FILE = 'input.txt'
+    INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
 
     with open(INPUT_PATH, 'r') as f:
         instructions = [line.strip().split() for line in f.readlines()]

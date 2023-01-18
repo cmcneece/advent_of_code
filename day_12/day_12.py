@@ -6,7 +6,10 @@ from dataclasses import dataclass, field
 import pandas as pd
 from functools import cached_property
 import heapq
+import pathlib
+import os
 
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 ELEVATION_MAPPING = {letter: elevation for letter, elevation
                      in zip(ascii_lowercase, range(len(ascii_lowercase)))}
@@ -264,7 +267,9 @@ def part_2(my_map: Map) -> int:
 
 
 if __name__ == "__main__":
-    input_path = "input.txt"
+    input_file = "input.txt"
+
+    input_path = os.path.join(DIR_PATH, input_file)
     my_map = Map(graph_type='directed')
     my_map.build_map_from_input(input_path)
 

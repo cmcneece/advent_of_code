@@ -1,7 +1,13 @@
 from .day_10 import get_signal_strength, part_2, execute_instructions
 import numpy as np
+import pathlib
+import os
 
-INPUT_PATH = 'test_input.txt'
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
+
+INPUT_FILE = 'test_input.txt'
+INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
 
 
 def set_up():

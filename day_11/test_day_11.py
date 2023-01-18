@@ -1,9 +1,14 @@
 from .day_11 import execute_rounds, parse_input, Monkey
+import pathlib
+import os
+
+DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 
 def set_up() -> tuple[list[Monkey], int]:
     ''' sets up the input tests'''
-    INPUT_PATH = 'test_input.txt'
+    INPUT_FILE = 'test_input.txt'
+    INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
 
     monkeys, supermodulo = parse_input(INPUT_PATH)
     return monkeys, supermodulo
