@@ -4,6 +4,7 @@ import os
 
 DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
+
 def compare(left: int, right: int) -> int:
     """Compare the deepest part of signal lists, return 1, 0, -1 depending on values"""
     if left < right:
