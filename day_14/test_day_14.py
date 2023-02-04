@@ -17,17 +17,17 @@ def set_up() -> tuple[list[int], list[int]]:
 
 def test_part_1():
     ''' Tests part 1'''
-    paths_x, paths_y = set_up()
+    path_xs, path_ys = set_up()
     part_1_true_answer = 24
-    domain, start_ind = make_domain_part_1(paths_x=paths_x, paths_y=paths_y)
+    domain, start_ind = make_domain_part_1(path_xs=path_xs, path_ys=path_ys)
     _, total_sand_grains = fill_domain(domain, start_ind)
     assert total_sand_grains == part_1_true_answer
 
 
 def test_part_2():
     ''' Tests part 2'''
-    paths_x, paths_y = set_up()
+    path_xs, path_ys = set_up()
     part_2_true_answer = 93
-    domain, start_ind = make_domain_part_2(paths_x=paths_x, paths_y=paths_y)
+    domain, start_ind = make_domain_part_2(path_xs=path_xs, path_ys=path_ys)
     _, total_sand_grains = fill_domain(domain, start_ind)
     assert total_sand_grains == part_2_true_answer
