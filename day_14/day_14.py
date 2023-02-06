@@ -172,7 +172,7 @@ def fill_domain(domain: np.ndarray, start_ind: tuple[int, int]) -> tuple[np.ndar
             continue
         # if none of the above the grain continues to fall
         grain_ind = updated_index
-    
+
     # return the domain and the total number of grains
     return domain, sum(sum(domain == "o"))
 
