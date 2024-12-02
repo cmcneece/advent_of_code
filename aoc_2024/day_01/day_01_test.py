@@ -1,17 +1,17 @@
-from .day_01 import part_1, part_2
+import pytest
 import pathlib
 import os
-
+from .day_01 import part_1, part_2
 
 DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
 
-def set_up():
+@pytest.fixture
+def data():
     INPUT_FILE = 'test_input.txt'
     INPUT_PATH = os.path.join(DIR_PATH, INPUT_FILE)
     with open(INPUT_PATH, 'r') as f:
         data = f.read().splitlines()
-
     return data
 
 
