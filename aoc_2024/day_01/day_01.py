@@ -29,7 +29,8 @@ def part_1(data, verbose=True):
 
     if verbose:
         print("--- Part 1 ---")
-        part_1_msg = f"The total distance between your lists is: {part_1_answer}"
+        part_1_msg = f"The total distance between your lists is: \
+          {part_1_answer}"
         print(part_1_msg)
     return part_1_answer
 
