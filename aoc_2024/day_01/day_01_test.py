@@ -27,10 +27,3 @@ def test_part_2(data):
     true_answer = 31
     part_2_answer = part_2(data, verbose=False)
     assert part_2_answer == true_answer
-
-
-if __name__ == "__main__":
-
-    data = set_up()
-    test_part_1(data)
-    test_part_2(data)
