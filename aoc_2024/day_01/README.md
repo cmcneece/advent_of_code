@@ -51,13 +51,14 @@ The Historians can't agree on which group made the mistakes or how to read most 
 This time, you'll need to figure out exactly how often each number from the left list appears in the right list. Calculate a total similarity score by adding up each number in the left list after multiplying it by the number of times that number appears in the right list.
 
 Here are the same example lists again:
-
+```
 3   4
 4   3
 2   5
 1   3
 3   9
 3   3
+```
 For these example lists, here is the process of finding the similarity score:
 
 The first number in the left list is 3. It appears in the right list three times, so the similarity score increases by 3 * 3 = 9.
