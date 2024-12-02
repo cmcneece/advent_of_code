@@ -1,4 +1,4 @@
-from day_01 import part_1, part_2
+from .day_01 import part_1, part_2
 import pathlib
 import os
 
