@@ -17,9 +17,7 @@ def set_up():
 
 def test_part_1(data):
     true_answer = 11
-
     part_1_answer = part_1(data, verbose=False)
-
     assert part_1_answer == true_answer
 
 
