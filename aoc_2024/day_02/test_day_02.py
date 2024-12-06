@@ -1,4 +1,4 @@
-import pytest
+import pytest  # type: ignore
 import pathlib
 import os
 from .day_02 import part_1, part_2, get_reports
