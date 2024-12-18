@@ -10,6 +10,9 @@ DIGIT_PATTERN = r"\d{1,3}"
 DONT_PATTERN = r"don\'t\(\)"
 DO_PATTERN = r"do\(\)"
 
+DONT = r"don\'t"
+DO = r"do"
+
 FULL_INSTRUCTION_PATTERN = "|".join([MUL_PATTERN, DONT_PATTERN, DO_PATTERN])
 
 
@@ -39,10 +42,10 @@ def execute_instructions(instructions):
     cum_sum = 0
     do = True
     for instruction in instructions:
-        if instruction == "don't()":
+        if instruction == DONT:
             do = False
             continue
-        if instruction == "do()":
+        if instruction == DO:
             do = True
             continue
         if do:
