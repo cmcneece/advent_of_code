@@ -5,10 +5,10 @@ import re
 
 DIR_PATH = pathlib.Path(__file__).parent.resolve()
 
-MUL_PATTERN = "mul\(\d{1,3},\d{1,3}\)"
-DIGIT_PATTERN = "\d{1,3}"
-DONT_PATTERN = "don\'t\(\)"
-DO_PATTERN = "do\(\)"
+MUL_PATTERN = r"mul\(\d{1,3},\d{1,3}\)"
+DIGIT_PATTERN = r"\d{1,3}"
+DONT_PATTERN = r"don\'t\(\)"
+DO_PATTERN = r"do\(\)"
 
 FULL_INSTRUCTION_PATTERN = "|".join([MUL_PATTERN, DONT_PATTERN, DO_PATTERN])
 
@@ -77,10 +77,12 @@ if __name__ == "__main__":
 
     # Part 1
     part_1_answer = part_1(input)
-    part_1_msg = f"You get {part_1_answer} if you add up all of the results of the multiplications."
+    part_1_msg = f"You get {part_1_answer} if you add up all of the results\
+        of the multiplications."
     print(part_1_msg)
 
     # Part 2
     part_2_answer = part_2(input)
-    part_2_msg = f"You get {part_2_answer} if you add up all of the results of the multiplications."
+    part_2_msg = f"You get {part_2_answer} if you add up all of the results\
+        of the multiplications."
     print(part_2_msg)
