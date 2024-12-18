@@ -10,8 +10,8 @@ DIGIT_PATTERN = r"\d{1,3}"
 DONT_PATTERN = r"don\'t\(\)"
 DO_PATTERN = r"do\(\)"
 
-DONT = r"don\'t"
-DO = r"do"
+DONT = "don't()"
+DO = "do()"
 
 FULL_INSTRUCTION_PATTERN = "|".join([MUL_PATTERN, DONT_PATTERN, DO_PATTERN])
 
